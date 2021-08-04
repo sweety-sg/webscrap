@@ -1,7 +1,11 @@
 import unittest
-from matrix import matrix
+from matrix import invalidMat, matrix
 
 class TestCalc(unittest.TestCase):
+    def matError(self):
+        with self.assertRaises(invalidMat) :
+            d= matrix([1,1,1],1)
+
     def test_add(self) :
         a= matrix([[1,0],[0,1]])
         b= matrix([[2,0],[0,2]])
@@ -27,9 +31,11 @@ class TestCalc(unittest.TestCase):
     def test_mul(self) :
         a= matrix([[1,0],[0,1]])
         b= matrix([[2,0],[0,2]])
+        d= matrix([1,1])
         ans = b
         obtained = a*b
         self.assertEqual(ans.values,obtained.values)
+        self.assertEqual(d.values,(d*a).values)
         c = matrix([[2,0,0],[1,0,2]])
         with self.assertRaises(ValueError) :
             c*a

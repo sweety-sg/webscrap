@@ -1,13 +1,36 @@
 import numpy as np
+class invalidMat(Exception):
+    """Raised when the matrix entered is invalid"""
+    pass
+
 class matrix:
     def __init__(self, values):
      self.values= values
-    def helper(x) :
-        ans = [[0 for c in range(len(x.values[0]))] for r in range (len(x.values))]
+     try:
+      for i in self.values:
+         if(isinstance(i, int)):
+          self.values = [self.values]
+          break
+     except:
+         pass
+     try:
+      for i in self.values :
+         if len(i) != len(self.values[0]) :
+             raise invalidMat("The matrix entered is invalid")
+     except :
+         pass
+
+    def check(z):
+        if(type(z.values[0])== int):
+          z.values = [z.values]
+          return z
+
+    def helper(x,y) :
+        ans = [[0 for c in range(len(x.values[0]))] for r in range (len(y.values))]
         return ans
 
     def __add__(self,other) :
-     ans = self.helper()
+     ans = self.helper(self)
 
      if (len(self.values) == len(other.values) and len(self.values[0]) == len(other.values[0])) :
         y=0
@@ -26,7 +49,7 @@ class matrix:
 
     
     def __sub__(self,other) :
-     ans = [[0 for c in range(len(self.values[0]))] for r in range (len(self.values))]
+     ans = self.helper(self)
 
      if (len(self.values) == len(other.values) and len(self.values[0]) == len(other.values[0])) :
         y=0
@@ -45,7 +68,7 @@ class matrix:
 
     
     def __mul__(self,other) :
-     ans = [[0 for c in range(len(other.values[0]))] for r in range (len(self.values))]
+     ans = other.helper(self)
 
      if (len(self.values[0]) == len(other.values)):
         for i in range(len(self.values)):
@@ -61,12 +84,6 @@ class matrix:
         return [row[: j] + row[j+1:] for row in (m[: i] + m[i+1:])]
 
     def __det__(self) :
-        # if (len(self.values[0]) == len(self.values)):
-        #     n_array = np.array(self.values)
-        #     det = np.linalg.det(n_array)
-        #     return det
-        # else:
-        #     raise ValueError("Matrices must be square")
      def cofactor(m, i, j):
         return [row[: j] + row[j+1:] for row in (m[: i] + m[i+1:])]
 
@@ -92,11 +109,4 @@ class matrix:
         for i in range(n-1) :
             ans = ans * self
         return matrix(ans)
-
-# a= matrix([[1,0],[0,1]])
-# b= matrix([[2,0],[0,2]])
-# print((a + b).values)
-# print((a - b).values)
-# print((a * b).values)
-# print((b ** 3).values.values)
 
