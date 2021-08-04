@@ -2,9 +2,12 @@ import numpy as np
 class matrix:
     def __init__(self, values):
      self.values= values
+    def helper(x) :
+        ans = [[0 for c in range(len(x.values[0]))] for r in range (len(x.values))]
+        return ans
 
     def __add__(self,other) :
-     ans = [[0 for c in range(len(self.values[0]))] for r in range (len(self.values))]
+     ans = self.helper()
 
      if (len(self.values) == len(other.values) and len(self.values[0]) == len(other.values[0])) :
         y=0
@@ -54,21 +57,37 @@ class matrix:
      else:
         raise ValueError("Matrices have dimensions invalid for multiplication")
 
-
+    def cofactor(m, i, j):
+        return [row[: j] + row[j+1:] for row in (m[: i] + m[i+1:])]
 
     def __det__(self) :
-        # ans = [[0 for c in range(len(self.values[0]))] for r in range (len(self.values))]
-        if (len(self.values[0]) == len(self.values)):
-            n_array = np.array(self.values)
-            det = np.linalg.det(n_array)
-            return det
+        # if (len(self.values[0]) == len(self.values)):
+        #     n_array = np.array(self.values)
+        #     det = np.linalg.det(n_array)
+        #     return det
+        # else:
+        #     raise ValueError("Matrices must be square")
+     def cofactor(m, i, j):
+        return [row[: j] + row[j+1:] for row in (m[: i] + m[i+1:])]
 
-        else:
-            raise ValueError("Matrices must be square")
+     if(len(self.values[0]) == len(self.values)):
+        if(len(self.values) == 2):
+            value = self.values[0][0] * self.values[1][1] - self.values[1][0] * self.values[0][1]
+            return value
+        Sum = 0
+        for current_column in range(len(self.values)):
+            sign = (-1) ** (current_column)
+            cf= cofactor(self.values, 0, current_column)
+            sub_det = __det__(cf)
+            Sum += (sign * self.values[0][current_column] * sub_det)
+    
+        return Sum
+     else:
+        raise ValueError("Matrices must be square")
+    
 
 
     def __pow__ (self, n) :
-        ans = [[0 for c in range(len(self.values[0]))] for r in range (len(self.values))]
         ans = self
         for i in range(n-1) :
             ans = ans * self

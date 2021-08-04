@@ -1,9 +1,3 @@
-# Create a function scrap(username) which scrapes the name(string), current city(string), work(list) 
-# and favourites(dictionary) from the facebook page (https://en-gb.facebook.com/{username}), 
-# prints the dictionary corresponding to the favourites (if there exists any, else instead of showing empty dictionary
-#  prints that there are no favourites), then instantiate an object of class “Person” (described above) with required 
-# parameter “name” and optional parameters “city”(current city, scraped above) and “work”(same).
-# Note: If there is empty list corresponding to work or there is no current city, the parameters must not be passed).
 import requests
 from bs4 import BeautifulSoup
 from html.parser import HTMLParser
@@ -24,7 +18,7 @@ translator = Translator()
 mydb  = mysql.connector.connect(
     host ="127.0.0.1" , 
     user = "root" , 
-    passwd="",
+    passwd="Mmsp13061402",
     database = "img" ,
     auth_plugin = "caching_sha2_password" ,
     port = 3306
@@ -109,7 +103,7 @@ def scrap(username):
 
 exist=0
 def srch_name(username):
-    url = "https://en-gb.facebook.com/" + username
+    url = "https://en-gb.facebook.com/{uname}".format(uname=username)
     r = requests.get(url)
     htmlContent = r.content
     soup = BeautifulSoup(htmlContent, 'html.parser')
@@ -119,7 +113,7 @@ def srch_name(username):
 def srch_city(username):
     exist=0
     city = ""
-    url = "https://m.facebook.com/" + username + "/about/"
+    url = "https://m.facebook.com/{uname}/about/".format(uname= username)
     r = requests.get(url)
     htmlContent = r.text
     soup = BeautifulSoup(htmlContent , 'html.parser')
@@ -139,7 +133,7 @@ def srch_city(username):
 
 def srch_work(username):
     exist=0
-    url = "https://m.facebook.com/" + username + "/about/"
+    url = "https://m.facebook.com/{uname}/about/".format(uname= username)
     r = requests.get(url)
     htmlContent = r.text
     soup = BeautifulSoup(htmlContent , 'html.parser')
@@ -167,7 +161,7 @@ def srch_work(username):
     
     # print(soup.prettify())
 def srch_fav(username) :
-    url = "https://m.facebook.com/" + username + "/about/"
+    url = "https://m.facebook.com/{uname}/about/".format(uname= username)
     driver = webdriver.Chrome(ChromeDriverManager().install())
     driver.get(url)
     time.sleep(1)
@@ -177,7 +171,7 @@ def srch_fav(username) :
     pwd = driver.find_element_by_id("m_login_password")
     email.send_keys(cred.c.uname)
     pwd.send_keys(cred.c.password)
-    time.sleep(0.5)
+    time.sleep(0.3)
     pwd.send_keys(Keys.RETURN)
     time.sleep(2)
     # driver.find_element_by_id("checkpointSubmitButton-actual-button").click()
@@ -216,16 +210,16 @@ def srch_fav(username) :
     time.sleep(0.5)
     driver.find_element_by_xpath('/html/body/div[1]/div[1]/div[2]/div/div[3]/a').click()
     time.sleep(0.5)
-    i=2
-    while(driver.find_element_by_xpath('//*[@id="timelineBody"]/div/div/div/div[i]/div/header/div/div[3]/a')) :
-        driver.find_element_by_xpath('//*[@id="timelineBody"]/div/div/div/div[1]/div/header/div/div[3]/a').click()
+    sections = driver.find_elements_by_xpath('//*[@id="timelineBody"]/div/div/div/div[*]/div/header/div/div[3]/a')
+    for sec in sections :
+        sec.click()
         time.sleep(0.5)
-        cat= driver.find_element_by_xpath('/html/body/div[1]/div[1]/div[4]/div/div/div/div/div/div/header/div/div/div/div/div[1]').get_text()
+        cat= driver.find_element_by_xpath('/html/body/div[1]/div[1]/div[4]/div/div/div/div/div/div/header/div/div/div/div/div[1]').text
         temp= []
         for span in driver.find_elements_by_xpath('/html/body/div[1]/div[1]/div[4]/div/div/div/div/div/div/div/div/div/div[1]/div/span'):
             temp.append(span.text)
         fav[cat] = temp
-        i+=1
+        time.sleep(3)
         driver.find_element_by_xpath('/html/body/div[1]/div[1]/div[2]/div/div[3]/a').click()
         time.sleep(0.5)
         

@@ -2,25 +2,27 @@ import unittest
 from matrix import matrix
 
 class TestCalc(unittest.TestCase):
-    # def setUp(self):
-    #     self.a= matrix([[1,0],[0,1]])
-    #     self.b= matrix([[2,0],[0,2]])
-
     def test_add(self) :
         a= matrix([[1,0],[0,1]])
         b= matrix([[2,0],[0,2]])
+        c = matrix([[2,0,0],[1,0,2]])
         ans = matrix([[3,0],[0,3]])
         obtained = a+b
         self.assertEqual(ans.values,obtained.values)
+        with self.assertRaises(ValueError) :
+            a+c
         # print(ans.values)
         # print(obtained.values)
 
     def test_sub(self) :
         a= matrix([[1,0],[0,1]])
         b= matrix([[2,0],[0,2]])
+        c = matrix([[2,0,0],[1,0,2]])
         ans = matrix([[-1,0],[0,-1]])
         obtained = a-b
         self.assertEqual(ans.values,obtained.values)
+        with self.assertRaises(ValueError) :
+            a-c
 
     def test_mul(self) :
         a= matrix([[1,0],[0,1]])
@@ -28,16 +30,22 @@ class TestCalc(unittest.TestCase):
         ans = b
         obtained = a*b
         self.assertEqual(ans.values,obtained.values)
+        c = matrix([[2,0,0],[1,0,2]])
+        with self.assertRaises(ValueError) :
+            c*a
 
     def test_det(self) :
         a= matrix([[1,0],[0,1]])
         b= matrix([[2,0],[0,2]])
+        c = matrix([[2,0,0],[1,0,2]])
         obtained1 = matrix.__det__(a)
         obtained2 = matrix.__det__(b)
         ans1 = 1
         ans2 = 4
         self.assertEqual(ans1,obtained1)
         self.assertEqual(ans2,obtained2)
+        with self.assertRaises(ValueError) :
+            matrix.__det__(c)
 
     def test_pow(self) :
         a1= 5
@@ -51,6 +59,11 @@ class TestCalc(unittest.TestCase):
         # print(obtained1)
         self.assertEqual(ans1.values,obtained1)
         self.assertEqual(ans2.values,obtained2)
+        c = matrix([[2,0,0],[1,0,2]])
+        with self.assertRaises(ValueError) :
+            (c**a1).values.values
+            
+        
 
 
 
