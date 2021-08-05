@@ -2,7 +2,10 @@ import numpy as np
 class invalidMat(Exception):
     """Raised when the matrix entered is invalid"""
     pass
-
+def helper(x,y) :
+        ans = [[0 for c in range(x)] for r in range (y)]
+        return ans
+        
 class matrix:
     def __init__(self, values):
      self.values= values
@@ -20,17 +23,8 @@ class matrix:
      except :
          pass
 
-    def check(z):
-        if(type(z.values[0])== int):
-          z.values = [z.values]
-          return z
-
-    def helper(x,y) :
-        ans = [[0 for c in range(len(x.values[0]))] for r in range (len(y.values))]
-        return ans
-
     def __add__(self,other) :
-     ans = self.helper(self)
+     ans = helper(len(self.values[0]), len(self.values))
 
      if (len(self.values) == len(other.values) and len(self.values[0]) == len(other.values[0])) :
         y=0
@@ -49,7 +43,7 @@ class matrix:
 
     
     def __sub__(self,other) :
-     ans = self.helper(self)
+     ans = helper(len(self.values[0]), len(self.values))
 
      if (len(self.values) == len(other.values) and len(self.values[0]) == len(other.values[0])) :
         y=0
@@ -68,7 +62,7 @@ class matrix:
 
     
     def __mul__(self,other) :
-     ans = other.helper(self)
+     ans = helper(len(other.values[0]), len(self.values))
 
      if (len(self.values[0]) == len(other.values)):
         for i in range(len(self.values)):
